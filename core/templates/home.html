@@ -1,0 +1,1004 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ profile.name }} | Professional Resume</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1e3c72;
+            --primary-dark: #0a1929;
+            --primary-light: #4a6fa5;
+            --secondary: #ffd700;
+            --accent: #ff6b4a;
+            --sidebar-bg: linear-gradient(180deg, #0a1929 0%, #1e3c72 100%);
+            --text-light: #e8f0fe;
+            --text-muted: #b0c4ce;
+            --card-bg: #ffffff;
+            --border-radius: 20px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4f7fc;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        /* Resume Container */
+        .resume-wrapper {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--sidebar-bg);
+            color: var(--text-light);
+            height: 100%;
+            padding: 40px 30px;
+            position: relative;
+        }
+
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            transition: var(--transition);
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+            border-color: var(--secondary);
+        }
+
+        .online-badge {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 15px;
+            height: 15px;
+            background: #4caf50;
+            border: 3px solid white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .profile-title {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+            margin-bottom: 20px;
+        }
+
+        /* Contact Info */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--secondary);
+        }
+
+        .contact-text {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .contact-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+            margin: 0;
+            word-break: break-word;
+        }
+
+        /* Sidebar Sections */
+        .sidebar-section {
+            margin-top: 30px;
+        }
+
+        .sidebar-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: white;
+        }
+
+        .sidebar-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        /* Skills in Sidebar */
+        .skill-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin: 0 5px 8px 0;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-tag:hover {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+            border-color: var(--secondary);
+        }
+
+        .skill-progress-item {
+            margin-bottom: 20px;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .skill-progress-bg {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), #ffb347);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+            background: white;
+        }
+
+        /* Section Styles */
+        .resume-section {
+            margin-bottom: 35px;
+        }
+
+        .resume-section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+
+        /* Experience/Education Cards */
+        .resume-card {
+            background: white;
+            border-left: 4px solid var(--primary);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .resume-card:hover {
+            box-shadow: 0 10px 30px rgba(30, 60, 114, 0.1);
+            border-left-color: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .resume-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .resume-card-subtitle {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .resume-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        .resume-card-meta i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        .resume-card-description {
+            color: #475569;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Project Cards */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .project-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            transition: var(--transition);
+            border: 1px solid #eef2f6;
+        }
+
+        .project-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(30, 60, 114, 0.1);
+            border-color: var(--primary-light);
+        }
+
+        .project-image {
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .project-item:hover .project-image img {
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .project-tech-tag {
+            background: #f1f5f9;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .project-link {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .project-link.github {
+            background: #f1f5f9;
+            color: var(--primary-dark);
+        }
+
+        .project-link.live {
+            background: var(--primary);
+            color: white;
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.2);
+        }
+
+        /* Languages & Certifications */
+        .language-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .language-name {
+            color: white;
+            font-weight: 500;
+        }
+
+        .language-level {
+            color: var(--secondary);
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 50px;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 25px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .resume-wrapper {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .sidebar {
+                padding: 30px 20px;
+            }
+            
+            .main-content {
+                padding: 30px 20px;
+            }
+            
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .resume-wrapper {
+                box-shadow: none;
+                margin: 0;
+            }
+            
+            .sidebar {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* Manual Field Styles */
+        .manual-field {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--secondary);
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 15px;
+        }
+
+        .field-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .field-value {
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Resume Container -->
+    <div class="resume-wrapper">
+        <div class="row g-0">
+            <!-- SIDEBAR - Professional Summary & Contact -->
+            <div class="col-lg-4 sidebar">
+                <!-- Profile Section -->
+                <div class="profile-section">
+                    <div class="profile-image-wrapper">
+                        {% if profile.profile_image %}
+                            <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}" class="profile-image">
+                        {% else %}
+                            <div class="profile-image" style="background: linear-gradient(135deg, var(--primary-light), var(--primary)); display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 3rem; color: white; font-weight: 600;">{{ profile.name|make_list|first }}</span>
+                            </div>
+                        {% endif %}
+                        <span class="online-badge"></span>
+                    </div>
+                    
+                    <h1 class="profile-name">{{ profile.name|default:"John Doe" }}</h1>
+                    <span class="profile-title">{{ profile.title|default:"Senior Full Stack Developer" }}</span>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Contact</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <div class="contact-label">Email</div>
+                            <p class="contact-value">{{ profile.email|default:"john.doe@example.com" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <div class="contact-label">Phone</div>
+                            <p class="contact-value">{{ profile.phone|default:"+1 (555) 123-4567" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                        <div class="contact-text">
+                            <div class="contact-label">Location</div>
+                            <p class="contact-value">{{ profile.location|default:"San Francisco, CA" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="contact-text">
+                            <div class="contact-label">Website</div>
+                            <p class="contact-value">{{ profile.website|default:"www.johndoe.com" }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Professional Summary -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Summary</h3>
+                    <div class="manual-field">
+                        <div class="field-label">Professional Profile</div>
+                        <div class="field-value">
+                            {{ profile.bio|default:"Results-driven Full Stack Developer with 8+ years of experience building scalable web applications. Expert in React, Node.js, and cloud architecture. Passionate about creating elegant solutions to complex problems." }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Skills -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Technical Skills</h3>
+                    
+                    <!-- Skill Categories - Manual Fields -->
+                    <div class="manual-field">
+                        <div class="field-label">Frontend</div>
+                        <div class="mb-2">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Vue.js</span>
+                            <span class="skill-tag">TypeScript</span>
+                            <span class="skill-tag">Next.js</span>
+                            <span class="skill-tag">Tailwind</span>
+                        </div>
+                    </div>
+
+                    <div class="manual-field">
+                        <div class="field-label">Backend</div>
+                        <div class="mb-2">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Django</span>
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">GraphQL</span>
+                        </div>
+                    </div>
+
+                    <div class="manual-field">
+                        <div class="field-label">Database & Cloud</div>
+                        <div class="mb-2">
+                            <span class="skill-tag">PostgreSQL</span>
+                            <span class="skill-tag">MongoDB</span>
+                            <span class="skill-tag">AWS</span>
+                            <span class="skill-tag">Docker</span>
+                            <span class="skill-tag">Kubernetes</span>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Skills with Progress -->
+                    {% for skill in skills %}
+                    <div class="skill-progress-item">
+                        <div class="skill-header">
+                            <span>{{ skill.name }}</span>
+                            <span>{{ skill.proficiency }}%</span>
+                        </div>
+                        <div class="skill-progress-bg">
+                            <div class="skill-progress-fill" style="width: {{ skill.proficiency }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Languages -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Languages</h3>
+                    
+                    <!-- Manual Language Entries -->
+                    <div class="language-item">
+                        <span class="language-name">English</span>
+                        <span class="language-level">Native</span>
+                    </div>
+                    <div class="language-item">
+                        <span class="language-name">Spanish</span>
+                        <span class="language-level">Professional</span>
+                    </div>
+                    <div class="language-item">
+                        <span class="language-name">French</span>
+                        <span class="language-level">Conversational</span>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Certifications</h3>
+                    
+                    <div class="manual-field">
+                        <div class="field-label">2023</div>
+                        <div class="field-value">AWS Certified Solutions Architect</div>
+                    </div>
+                    
+                    <div class="manual-field">
+                        <div class="field-label">2022</div>
+                        <div class="field-value">Google Professional Cloud Developer</div>
+                    </div>
+                    
+                    <div class="manual-field">
+                        <div class="field-label">2021</div>
+                        <div class="field-value">Meta Backend Developer Certificate</div>
+                    </div>
+                </div>
+
+                <!-- Interests -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Interests</h3>
+                    <span class="skill-tag"><i class="fas fa-camera me-2"></i>Photography</span>
+                    <span class="skill-tag"><i class="fas fa-hiking me-2"></i>Hiking</span>
+                    <span class="skill-tag"><i class="fas fa-chess me-2"></i>Chess</span>
+                    <span class="skill-tag"><i class="fas fa-book me-2"></i>Reading</span>
+                    <span class="skill-tag"><i class="fas fa-music me-2"></i>Piano</span>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT - Experience, Education, Projects -->
+            <div class="col-lg-8 main-content">
+                <!-- Work Experience -->
+                <div class="resume-section">
+                    <div class="resume-section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h2 class="section-title">Work Experience</h2>
+                    </div>
+
+                    {% if experience %}
+                        {% for exp in experience %}
+                        <div class="resume-card">
+                            <h3 class="resume-card-title">{{ exp.role }}</h3>
+                            <div class="resume-card-subtitle">
+                                <i class="fas fa-building me-2"></i>{{ exp.company }}
+                            </div>
+                            <div class="resume-card-meta">
+                                <span><i class="fas fa-calendar"></i>{{ exp.duration }}</span>
+                                <span><i class="fas fa-map-pin"></i>{{ exp.location|default:"Remote" }}</span>
+                            </div>
+                            <p class="resume-card-description">{{ exp.description }}</p>
+                            
+                            {% if exp.achievements %}
+                            <div class="mt-3">
+                                <strong style="color: var(--primary); font-size: 0.9rem;">Key Achievements:</strong>
+                                <ul class="mt-2" style="color: #475569; padding-left: 20px;">
+                                    {% for achievement in exp.get_achievements_list %}
+                                    <li style="margin-bottom: 5px;">{{ achievement }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Manual Experience Entries -->
+                        <div class="resume-card">
+                            <h3 class="resume-card-title">Senior Full Stack Developer</h3>
+                            <div class="resume-card-subtitle">
+                                <i class="fas fa-building me-2"></i>TechCorp Solutions
+                            </div>
+                            <div class="resume-card-meta">
+                                <span><i class="fas fa-calendar"></i>2021 - Present</span>
+                                <span><i class="fas fa-map-pin"></i>San Francisco, CA</span>
+                            </div>
+                            <p class="resume-card-description">Lead developer for enterprise-scale React applications serving 500k+ users. Architect and implement microservices using Node.js and AWS. Mentor junior developers and conduct code reviews.</p>
+                            <ul style="color: #475569; padding-left: 20px; margin-top: 10px;">
+                                <li>Reduced API response time by 40% through query optimization</li>
+                                <li>Implemented CI/CD pipeline reducing deployment time by 60%</li>
+                                <li>Led migration from monolith to microservices architecture</li>
+                            </ul>
+                        </div>
+
+                        <div class="resume-card">
+                            <h3 class="resume-card-title">Full Stack Developer</h3>
+                            <div class="resume-card-subtitle">
+                                <i class="fas fa-building me-2"></i>Digital Innovations Inc
+                            </div>
+                            <div class="resume-card-meta">
+                                <span><i class="fas fa-calendar"></i>2018 - 2021</span>
+                                <span><i class="fas fa-map-pin"></i>New York, NY</span>
+                            </div>
+                            <p class="resume-card-description">Developed and maintained 15+ client websites and web applications. Collaborated with design team to implement responsive UI components. Optimized database queries and improved application performance.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Education -->
+                <div class="resume-section">
+                    <div class="resume-section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h2 class="section-title">Education</h2>
+                    </div>
+
+                    {% if education %}
+                        {% for edu in education %}
+                        <div class="resume-card">
+                            <h3 class="resume-card-title">{{ edu.degree }}</h3>
+                            <div class="resume-card-subtitle">{{ edu.institution }}</div>
+                            <div class="resume-card-meta">
+                                <span><i class="fas fa-calendar"></i>{{ edu.year }}</span>
+                                <span><i class="fas fa-star"></i>GPA: {{ edu.gpa|default:"3.8/4.0" }}</span>
+                            </div>
+                            <p class="resume-card-description">{{ edu.description }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Manual Education Entries -->
+                        <div class="resume-card">
+                            <h3 class="resume-card-title">Master of Science in Computer Science</h3>
+                            <div class="resume-card-subtitle">Stanford University</div>
+                            <div class="resume-card-meta">
+                                <span><i class="fas fa-calendar"></i>2016 - 2018</span>
+                                <span><i class="fas fa-star"></i>GPA: 3.9/4.0</span>
+                            </div>
+                            <p class="resume-card-description">Specialized in Distributed Systems and Machine Learning. Thesis on "Scalable Microservices Architecture for Cloud Applications".</p>
+                        </div>
+
+                        <div class="resume-card">
+                            <h3 class="resume-card-title">Bachelor of Science in Software Engineering</h3>
+                            <div class="resume-card-subtitle">University of California, Berkeley</div>
+                            <div class="resume-card-meta">
+                                <span><i class="fas fa-calendar"></i>2012 - 2016</span>
+                                <span><i class="fas fa-star"></i>GPA: 3.7/4.0</span>
+                            </div>
+                            <p class="resume-card-description">Dean's List all semesters. Capstone project: "AI-Powered Resume Matcher" - Won Best Project Award.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Featured Projects -->
+                <div class="resume-section">
+                    <div class="resume-section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h2 class="section-title">Featured Projects</h2>
+                    </div>
+
+                    <div class="project-grid">
+                        {% if projects %}
+                            {% for project in projects %}
+                            <div class="project-item">
+                                <div class="project-image">
+                                    {% if project.image %}
+                                        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                                    {% else %}
+                                        <div style="background: linear-gradient(135deg, var(--primary-light), var(--primary)); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-code" style="font-size: 3rem; color: rgba(255,255,255,0.3);"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="project-content">
+                                    <h4 class="project-title">{{ project.title }}</h4>
+                                    <div class="project-tech">
+                                        {% for tech in project.technologies.split|slice:":3" %}
+                                            <span class="project-tech-tag">{{ tech }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">{{ project.description|truncatewords:15 }}</p>
+                                    <div class="project-links">
+                                        {% if project.github_link %}
+                                            <a href="{{ project.github_link }}" class="project-link github" target="_blank">
+                                                <i class="fab fa-github me-1"></i>Code
+                                            </a>
+                                        {% endif %}
+                                        {% if project.live_link %}
+                                            <a href="{{ project.live_link }}" class="project-link live" target="_blank">
+                                                <i class="fas fa-external-link-alt me-1"></i>Live
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <!-- Manual Project Entries -->
+                            <div class="project-item">
+                                <div class="project-image">
+                                    <div style="background: linear-gradient(135deg, #4a6fa5, #1e3c72); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-shopping-cart" style="font-size: 3rem; color: rgba(255,255,255,0.3);"></i>
+                                    </div>
+                                </div>
+                                <div class="project-content">
+                                    <h4 class="project-title">E-Commerce Platform</h4>
+                                    <div class="project-tech">
+                                        <span class="project-tech-tag">React</span>
+                                        <span class="project-tech-tag">Node.js</span>
+                                        <span class="project-tech-tag">MongoDB</span>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Full-featured e-commerce platform with payment integration</p>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link github"><i class="fab fa-github me-1"></i>Code</a>
+                                        <a href="#" class="project-link live"><i class="fas fa-external-link-alt me-1"></i>Live</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-image">
+                                    <div style="background: linear-gradient(135deg, #ff6b4a, #ff8c5a); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-robot" style="font-size: 3rem; color: rgba(255,255,255,0.3);"></i>
+                                    </div>
+                                </div>
+                                <div class="project-content">
+                                    <h4 class="project-title">AI Task Manager</h4>
+                                    <div class="project-tech">
+                                        <span class="project-tech-tag">Python</span>
+                                        <span class="project-tech-tag">Django</span>
+                                        <span class="project-tech-tag">TensorFlow</span>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">AI-powered task prioritization and management system</p>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link github"><i class="fab fa-github me-1"></i>Code</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-image">
+                                    <div style="background: linear-gradient(135deg, #2ecc71, #27ae60); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-chart-line" style="font-size: 3rem; color: rgba(255,255,255,0.3);"></i>
+                                    </div>
+                                </div>
+                                <div class="project-content">
+                                    <h4 class="project-title">Analytics Dashboard</h4>
+                                    <div class="project-tech">
+                                        <span class="project-tech-tag">Vue.js</span>
+                                        <span class="project-tech-tag">D3.js</span>
+                                        <span class="project-tech-tag">Firebase</span>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Real-time analytics dashboard with interactive visualizations</p>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link github"><i class="fab fa-github me-1"></i>Code</a>
+                                        <a href="#" class="project-link live"><i class="fas fa-external-link-alt me-1"></i>Live</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Achievements & Awards -->
+                <div class="resume-section">
+                    <div class="resume-section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h2 class="section-title">Achievements</h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="manual-field" style="background: #f8fafc; padding: 20px; border-left-color: var(--primary);">
+                                <div class="field-label" style="color: var(--primary);">2023</div>
+                                <div style="font-weight: 700; color: var(--primary-dark);">Hackathon Winner</div>
+                                <div style="font-size: 0.9rem; color: #475569;">Best Web3 Innovation - ETHGlobal</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="manual-field" style="background: #f8fafc; padding: 20px; border-left-color: var(--primary);">
+                                <div class="field-label" style="color: var(--primary);">2022</div>
+                                <div style="font-weight: 700; color: var(--primary-dark);">Employee of the Year</div>
+                                <div style="font-size: 0.9rem; color: #475569;">TechCorp Solutions</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Publications -->
+                <div class="resume-section">
+                    <div class="resume-section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <h2 class="section-title">Publications</h2>
+                    </div>
+
+                    <div class="resume-card">
+                        <h3 class="resume-card-title">Modern Microservices Patterns</h3>
+                        <div class="resume-card-subtitle">Medium Publication</div>
+                        <div class="resume-card-meta">
+                            <span><i class="fas fa-calendar"></i>March 2023</span>
+                        </div>
+                        <p class="resume-card-description">An in-depth guide to building scalable microservices with Node.js and Docker. Featured in Medium's Top 10 Engineering Articles.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Animate skill bars on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillBars = document.querySelectorAll('.skill-progress-fill');
+            skillBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
